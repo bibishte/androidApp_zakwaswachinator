@@ -12,6 +12,8 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.tcp_test.R;
 /*Display Activity with sending messages to server*/
 
@@ -19,12 +21,9 @@ import com.example.tcp_test.R;
 public class MainActivity extends Activity
 {
     private TCPClient mTcpClient = null;
-    //private com.src.socket.client.TCPClient mTcpClient = null;
     private connectTask conctTask = null;
+    private String zad_rec=null;
     private String ipAddressOfServerDevice;
-    private String serverReadTemp;
-    private boolean con_check;
-    private final TCPClient.OnMessageReceived serverListener = null;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -40,18 +39,23 @@ public class MainActivity extends Activity
 
             ipAddressOfServerDevice = WelcomePage.getServerIp();
 
-            final EditText editText = (EditText) findViewById(R.id.editText);
-            final EditText temp = (EditText) findViewById(R.id.filed_temperature);
-            Button send = (Button)findViewById(R.id.send_button);
-            Button write_temp = (Button)findViewById(R.id.button_write_temp);
-            Button read_temp = (Button)findViewById(R.id.button_read_temp);
-            Button disconnect = (Button)findViewById(R.id.disconnect);
+            final EditText editText = findViewById(R.id.editText);
+            final EditText temp = findViewById(R.id.assign_temperature);
+            Button send = findViewById(R.id.send_button);
+            Button write_temp = findViewById(R.id.button_write_assign_temp);
+            Button read_temp = findViewById(R.id.button_read_assign_temp);
+            Button disconnect = findViewById(R.id.disconnect);
 
 
             //mTcpClient = null;
             // connect to the server
             conctTask = new connectTask();
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            if(conctTask.getip_invalid()==true)
+            {
+                setContentView(R.layout.welcome_page);
+                Toast.makeText(MainActivity.this, "server not running", Toast.LENGTH_LONG).show();
+            }
             send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -68,7 +72,7 @@ public class MainActivity extends Activity
             write_temp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String message = temp.getText().toString();
+                    String message = "setZadanie " + temp.getText().toString();
                     //sends the message to the server
                     if (mTcpClient != null)
                     {
@@ -76,14 +80,14 @@ public class MainActivity extends Activity
                     }
                 }
             });
-
-
             read_temp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mTcpClient.sendMessage("zadanie?");
+                    //serverListener.messageReceived(serverReadTemp);
+                    zad_rec=mTcpClient.readMssg();
+                    temp.setText(zad_rec);
 
-                    serverListener.messageReceived(serverReadTemp);
-                    temp.setText(serverReadTemp);
                 }
             });
 
@@ -100,7 +104,8 @@ public class MainActivity extends Activity
     }
 
     /*receive the message from server with asyncTask*/
-    public class connectTask extends AsyncTask<String,String,TCPClient> {
+    public class connectTask extends AsyncTask<String,String,TCPClient>{
+        private boolean ip_invalid=false;
         @Override
         protected TCPClient doInBackground(String... message)
         {
@@ -127,11 +132,23 @@ public class MainActivity extends Activity
                 }
             },ipAddressOfServerDevice);
             mTcpClient.run();
+
             if(mTcpClient!=null)
             {
-                mTcpClient.sendMessage("Initial Message when connected with Socket Server");
+                //mTcpClient.sendMessage("Initial Message when connected with Socket Server");
+                System.out.println("connected");
+            }
+            if(mTcpClient.getinvali_ip()==true)
+            {
+                //setContentView(R.layout.welcome_page);
+                //Toast.makeText(MainActivity.this, "server not running", Toast.LENGTH_LONG).show();
+                ip_invalid=true;
             }
             return null;
+        }
+
+        public boolean getip_invalid() {
+            return ip_invalid;
         }
 
     }

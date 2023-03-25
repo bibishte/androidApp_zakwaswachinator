@@ -2,6 +2,7 @@
 package com.example.tcp_test.socket.client;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -15,16 +16,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.example.tcp_test.R;
-public class TCPClient{
+public class TCPClient {
     private String serverMessage;
+
 	public String serverIp = "192.168.1.105";
     public static int SERVERPORT = 3333;
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = true;
  
     private PrintWriter out = null;
-    private BufferedReader in = null;
+
     private Socket socket;
+    private boolean invali_ip=false;
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
@@ -73,7 +76,7 @@ public class TCPClient{
             //create a socket to make the connection with the server
             socket = new Socket(serverAddr, SERVERPORT);
             try {
-
+                invali_ip=false;
                 //send the message to the server
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
@@ -81,27 +84,15 @@ public class TCPClient{
 
                 Log.e("TCP SI Client", "SI: Done.");
                 //receive the message which the server sends back
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                //in this while the client listens for the messages sent by the server
-                while (mRun) {
-                	serverMessage = in.readLine();
-
-                    if (serverMessage != null && mMessageListener != null) {
-                        //call the method messageReceived from MyActivity class
-                        mMessageListener.messageReceived(serverMessage);
-                        Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
-                    }
-                    serverMessage = null;
-
-                }
-
-
-
+                //while (mRun) {
+                    //serverMessage = readMssg();
+                    //Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
+                //}
 
             }
             catch (Exception e)
             {
-                Log.e("TCP SI Error", "SI: Error", e);
+                Log.e("TCP SI Error2", "SI: Error2", e);
                 stopClient();
                 e.printStackTrace();
                 //Toast.makeText(getApplicationContext(), "mymessage ", Toast.LENGTH_SHORT).show();
@@ -110,13 +101,17 @@ public class TCPClient{
             {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
-                stopClient();
+                if(invali_ip==true) {
+                    stopClient();
+                    //Toast.makeText(getApplicationContext(), "mymessage ", Toast.LENGTH_SHORT).show();
+                }
             }
 
         } catch (Exception e) {
 
-            Log.e("TCP SI Error", "SI: Error", e);
-
+            Log.e("TCP SI Error11", "SI: Error1111", e);
+            //Toast.makeText(getApplicationContext(), "mymessage ", Toast.LENGTH_SHORT).show();
+            invali_ip=true;
         }
  
     }
@@ -127,4 +122,37 @@ public class TCPClient{
         void messageReceived(String message);
     }
 
+
+    public boolean getinvali_ip() {
+        return invali_ip;
+    }
+
+
+    public String readMssg() {
+        String received_mssg=null;
+        BufferedReader in = null;
+        String serverMessage_loc=null;
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //in this while the client listens for the messages sent by the server
+
+            try {
+                serverMessage_loc = in.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (serverMessage_loc != null && mMessageListener != null) {
+                //call the method messageReceived from MyActivity class
+                mMessageListener.messageReceived(serverMessage_loc);
+                Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage_loc + "'");
+
+            }
+
+
+        return serverMessage_loc;
+    }
 }
