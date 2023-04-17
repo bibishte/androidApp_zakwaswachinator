@@ -2,16 +2,20 @@ package com.example.tcp_test.socket.client;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tcp_test.R;
@@ -23,7 +27,10 @@ public class MainActivity extends Activity
     private TCPClient mTcpClient = null;
     private connectTask conctTask = null;
     private String zad_rec=null;
+    private String meas_rec=null;
     private String ipAddressOfServerDevice;
+    final Handler myHandler = new Handler();
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +48,7 @@ public class MainActivity extends Activity
 
             final EditText editText = findViewById(R.id.editText);
             final EditText temp = findViewById(R.id.assign_temperature);
+
             Button send = findViewById(R.id.send_button);
             Button write_temp = findViewById(R.id.button_write_assign_temp);
             Button read_temp = findViewById(R.id.button_read_assign_temp);
@@ -56,6 +64,8 @@ public class MainActivity extends Activity
                 setContentView(R.layout.welcome_page);
                 Toast.makeText(MainActivity.this, "server not running", Toast.LENGTH_LONG).show();
             }
+
+
             send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -98,10 +108,47 @@ public class MainActivity extends Activity
                     setContentView(R.layout.welcome_page);
                 }
             });
+            try {
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    //Download file here and refresh
+                    if(mTcpClient!=null) {
+                        updateMeasTemp();
+                    }
+                }
+            };
+            timer.schedule(timerTask,1000, 3000);
+            } catch (IllegalStateException e){
+                Toast.makeText(MainActivity.this, "Disconnected! Restart", Toast.LENGTH_LONG).show();
+            }
         }
 
 
     }
+
+
+    void updateMeasTemp()
+    {
+        final TextView meas_temp = findViewById(R.id.meas_temperature);
+        try {
+            meas_temp.post(new Runnable() {
+                @Override
+                public void run() {
+                    mTcpClient.sendMessage("mTemp?");
+                    //serverListener.messageReceived(serverReadTemp);
+                    meas_rec = mTcpClient.readMssg();
+
+                    meas_temp.setText(meas_rec);
+                }
+            });
+        }catch(Exception e)
+        {
+            System.out.println("NESHTOOOO");
+        }
+    }
+
 
     /*receive the message from server with asyncTask*/
     public class connectTask extends AsyncTask<String,String,TCPClient>{

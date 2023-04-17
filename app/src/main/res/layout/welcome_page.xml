@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="192.168.1.105" />
+        android:text="192.168.1.171" />
 
     <TextView
         android:id="@+id/port_txt"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="3333" />
+        android:text="24650" />
 
     <Button
         android:id="@+id/enterIP"

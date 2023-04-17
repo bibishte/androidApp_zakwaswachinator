@@ -33,14 +33,14 @@ public class WelcomePage  extends Activity {
                 serverIp =  ipPrompt.getText().toString();
                 portNo =  portPrompt.getText().toString();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                    if ( !serverIp.matches("[" + .0123456789 + "]+") || serverIp.contains(" ") || serverIp.isEmpty() || serverIp.equals(null) || serverIp == null ) {
+                    /*if ( !serverIp.matches("[" + .0123456789 + "]+") || serverIp.contains(" ") || serverIp.isEmpty() || serverIp.equals(null) || serverIp == null ) {
                         ipPrompt.setText("");
                         Toast.makeText(WelcomePage.this, "Invalid IP Address!", Toast.LENGTH_LONG).show();
                     }
-                    else {
+                    else {*/
                         Intent i = new Intent( view.getContext(), MainActivity.class);
                         startActivity(i);
-                    }
+                    //}
                 }
             }
         });

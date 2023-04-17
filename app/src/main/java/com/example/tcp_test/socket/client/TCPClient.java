@@ -1,5 +1,7 @@
 //package com.src.socket.client;
 package com.example.tcp_test.socket.client;
+import static com.example.tcp_test.socket.client.WelcomePage.getPortNo;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,7 +22,7 @@ public class TCPClient {
     private String serverMessage;
 
 	public String serverIp = "192.168.1.105";
-    public static int SERVERPORT = 3333;
+    public static int SERVERPORT;
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = true;
  
@@ -74,7 +76,7 @@ public class TCPClient {
             Log.e("TCP SI Client", "SI: Connecting...");
 
             //create a socket to make the connection with the server
-            socket = new Socket(serverAddr, SERVERPORT);
+            socket = new Socket(serverAddr, Integer.parseInt(getPortNo()));
             try {
                 invali_ip=false;
                 //send the message to the server
