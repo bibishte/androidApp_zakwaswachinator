@@ -2,18 +2,23 @@
 package com.example.tcp_test.socket.client;
 import static com.example.tcp_test.socket.client.WelcomePage.getPortNo;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,12 +34,14 @@ public class TCPClient {
     private PrintWriter out = null;
 
     private Socket socket;
+
+
+    //DataInputStream din = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
     private boolean invali_ip=false;
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
-    public TCPClient(final OnMessageReceived listener, String ipAddressOfServerDevice)
-    {
+    public TCPClient(final OnMessageReceived listener, String ipAddressOfServerDevice) throws IOException {
         mMessageListener = listener;
         serverIp = ipAddressOfServerDevice;
     }
@@ -156,5 +163,68 @@ public class TCPClient {
 
 
         return serverMessage_loc;
+    }
+
+
+    public byte[] readMessage() throws IOException {
+        InputStream stream = socket.getInputStream();
+        byte[] data = new byte[36];
+        int count = stream.read(data);
+        System.out.println("nqkakwi bytes: " + data);
+
+        int zadanie_asInt = (data[0] & 0xFF)
+                | ((data[1] & 0xFF) << 8)
+                | ((data[2] & 0xFF) << 16)
+                | ((data[3] & 0xFF) << 24);
+
+        int kp_asInt = (data[4] & 0xFF)
+                | ((data[5] & 0xFF) << 8)
+                | ((data[6] & 0xFF) << 16)
+                | ((data[7] & 0xFF) << 24);
+
+        int kid_asInt = (data[8] & 0xFF)
+                | ((data[9] & 0xFF) << 8)
+                | ((data[10] & 0xFF) << 16)
+                | ((data[11] & 0xFF) << 24);
+
+        int limit_asInt = (data[12] & 0xFF)
+                | ((data[13] & 0xFF) << 8)
+                | ((data[14] & 0xFF) << 16)
+                | ((data[15] & 0xFF) << 24);
+
+        int kd_asInt = (data[16] & 0xFF)
+                | ((data[17] & 0xFF) << 8)
+                | ((data[18] & 0xFF) << 16)
+                | ((data[19] & 0xFF) << 24);
+
+        int timeStart_asInt = (data[20] & 0xFF)
+                | ((data[21] & 0xFF) << 8)
+                | ((data[22] & 0xFF) << 16)
+                | ((data[23] & 0xFF) << 24);
+        int timeStop_asInt = (data[24] & 0xFF)
+                | ((data[25] & 0xFF) << 8)
+                | ((data[26] & 0xFF) << 16)
+                | ((data[27] & 0xFF) << 24);
+
+        int time_asInt = (data[28] & 0xFF)
+                | ((data[29] & 0xFF) << 8)
+                | ((data[30] & 0xFF) << 16)
+                | ((data[31] & 0xFF) << 24);
+
+        int rele2On_asInt = (data[32] & 0xFF);
+
+        int rele3On_asInt = (data[33] & 0xFF);
+        float zadanie_asFloat = Float.intBitsToFloat(zadanie_asInt);
+        float kp_asFloat = Float.intBitsToFloat(kp_asInt);
+        float kid_asFloat = Float.intBitsToFloat(kid_asInt);
+        float limit_asFloat = Float.intBitsToFloat(limit_asInt);
+        float kd_asFloat = Float.intBitsToFloat(kd_asInt);
+        float timeStart_asFloat = Float.intBitsToFloat(timeStart_asInt);
+        float timeStop_asFloat = Float.intBitsToFloat(timeStop_asInt);
+        float time_asFloat = Float.intBitsToFloat(time_asInt);
+        System.out.println("neshtoto kym float : " + zadanie_asFloat);
+        System.out.println("neshtoto kym float : " + kp_asFloat);
+
+        return data;
     }
 }

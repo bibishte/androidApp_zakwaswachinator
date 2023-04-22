@@ -1,16 +1,14 @@
 package com.example.tcp_test.socket.client;
 
-import java.net.Socket;
-import java.util.ArrayList;
+
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
@@ -29,11 +27,13 @@ public class MainActivity extends Activity
     private String zad_rec=null;
     private String meas_rec=null;
     private String ipAddressOfServerDevice;
-    final Handler myHandler = new Handler();
-
+    private byte[] debugProgr=null;
+    ProgramStruct prog=new ProgramStruct();
+    private final String debugProgr1=null;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {
@@ -52,6 +52,7 @@ public class MainActivity extends Activity
             Button send = findViewById(R.id.send_button);
             Button write_temp = findViewById(R.id.button_write_assign_temp);
             Button read_temp = findViewById(R.id.button_read_assign_temp);
+            Button get_programs = findViewById(R.id.getPrograms);
             Button disconnect = findViewById(R.id.disconnect);
 
 
@@ -101,6 +102,34 @@ public class MainActivity extends Activity
                 }
             });
 
+
+            read_temp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mTcpClient.sendMessage("zadanie?");
+                    //serverListener.messageReceived(serverReadTemp);
+                    zad_rec=mTcpClient.readMssg();
+                    temp.setText(zad_rec);
+
+                }
+            });
+
+            get_programs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mTcpClient.sendMessage("programs?");
+                    //serverListener.messageReceived(serverReadTemp);
+                    //prog=mTcpClient.readMssg();
+                    try {
+                        debugProgr=mTcpClient.readMessage();
+                    } catch (IOException e) {
+                        System.out.println("errrrrorrrr");
+                    }
+
+                    System.out.println("neshtoo: " + debugProgr);
+                    //temp.setText(zad_rec);
+                }
+            });
             disconnect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -157,27 +186,31 @@ public class MainActivity extends Activity
         protected TCPClient doInBackground(String... message)
         {
             //create a TCPClient object and
-            mTcpClient = new TCPClient(new TCPClient.OnMessageReceived()
-            {
-                @Override
-                //here the messageReceived method is implemented
-                public void messageReceived(String message)
+            try {
+                mTcpClient = new TCPClient(new TCPClient.OnMessageReceived()
                 {
-                    try
+                    @Override
+                    //here the messageReceived method is implemented
+                    public void messageReceived(String message)
                     {
-                        //this method calls the onProgressUpdate
-                        publishProgress(message);
-                        if(message!=null)
+                        try
                         {
-                            System.out.println("Return Message from Socket::::: >>>>> "+message);
+                            //this method calls the onProgressUpdate
+                            publishProgress(message);
+                            if(message!=null)
+                            {
+                                System.out.println("Return Message from Socket::::: >>>>> "+message);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
                         }
                     }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            },ipAddressOfServerDevice);
+                },ipAddressOfServerDevice);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             mTcpClient.run();
 
             if(mTcpClient!=null)
