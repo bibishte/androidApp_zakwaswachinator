@@ -2,8 +2,12 @@ package com.example.tcp_test.socket.client;
 
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,11 +29,26 @@ public class MainActivity extends Activity
     private TCPClient mTcpClient = null;
     private connectTask conctTask = null;
     private String zad_rec=null;
+    private String prog_name=null;
+    private final String steps_in_prog=null;
+    private String number_steps_read=null;
+    private String steps_in_prog_concat=null;
+    private String numb_progs=null;
+    private int number_progs=0;
+    private int number_steps_in_progs=0;
     private String meas_rec=null;
     private String ipAddressOfServerDevice;
-    private byte[] debugProgr=null;
-    ProgramStruct prog=new ProgramStruct();
+    private final byte[] debugProgr=null;
+
     private final String debugProgr1=null;
+
+    private String prog_names_concat=null;
+    private String prog_numb=null;
+
+    private final ProgramStruct single_programs=new ProgramStruct();
+    private final List<ProgramStruct> programs= new ArrayList<ProgramStruct>();
+
+    private final OperationParam tmpOpParams=new OperationParam();
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -117,17 +136,38 @@ public class MainActivity extends Activity
             get_programs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mTcpClient.sendMessage("programs?");
-                    //serverListener.messageReceived(serverReadTemp);
-                    //prog=mTcpClient.readMssg();
-                    try {
-                        debugProgr=mTcpClient.readMessage();
-                    } catch (IOException e) {
-                        System.out.println("errrrrorrrr");
-                    }
 
-                    System.out.println("neshtoo: " + debugProgr);
-                    //temp.setText(zad_rec);
+
+                    mTcpClient.sendMessage("countProgs?");
+                    numb_progs=mTcpClient.readMssg();
+                    number_progs=Integer.parseInt(numb_progs);
+                    for(int i=0; i<number_progs; i++) {
+                        prog_name=null;
+                        prog_names_concat=null;
+                        prog_names_concat="nameProgs="+i;
+                        prog_name=null;
+                        mTcpClient.sendMessage(prog_names_concat);
+                        prog_name = mTcpClient.readMssg();
+
+                        steps_in_prog_concat="nameStepProgs="+i;
+                        mTcpClient.sendMessage(steps_in_prog_concat);
+                        number_steps_read=mTcpClient.readMssg();
+                        number_steps_in_progs=Integer.parseInt(number_steps_read);
+
+                        prog_numb="programs="+i;
+                        mTcpClient.sendMessage(prog_numb);
+
+
+                        try {
+                            programs.add(mTcpClient.readStructData(prog_name, number_steps_in_progs));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        //programs.add(single_programs);
+
+                        System.out.println("111111");
+
+                    }
                 }
             });
             disconnect.setOnClickListener(new View.OnClickListener() {
