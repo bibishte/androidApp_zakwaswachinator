@@ -18,6 +18,7 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity
                         Button read_temp = findViewById(R.id.button_read_assign_temp);
                         Button get_programs = findViewById(R.id.getPrograms);
                         Button disconnect = findViewById(R.id.disconnect);
+                        Button  add_fields = findViewById(R.id.add_fields);
 
 
                         //mTcpClient = null;
@@ -205,8 +207,34 @@ public class MainActivity extends AppCompatActivity
                                                 }
                                                 //programs.add(single_programs);
 
-                                                System.out.println("111111");
 
+
+                                        }
+                                        System.out.println("111111");
+                                        for(ProgramStruct ps : programs)
+                                        {
+                                                TextView p_name_tv=new TextView(MainActivity.this);
+                                                EditText p_name = new EditText(MainActivity.this);
+                                                p_name.setText(ps.progName);
+                                                p_name_tv.setText("Program Name");
+                                                LinearLayout ll = (LinearLayout)findViewById(R.id.tab2);
+                                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                ll.addView(p_name_tv, lp);
+                                                ll.addView(p_name, lp);
+
+                                                for(OperationParam op : ps.program)
+                                                {
+                                                        TextView op_name_tv=new TextView(MainActivity.this);
+                                                        EditText op_name = new EditText(MainActivity.this);
+                                                        op_name_tv.setText("Zadanie");
+                                                        op_name.setText(String.valueOf(op.zadanie));
+                                                        LinearLayout ll1= (LinearLayout)findViewById(R.id.tab2);
+                                                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                        ll.addView(op_name_tv, lp1);
+                                                        ll1.addView(op_name, lp1);
+                                                }
                                         }
                                 }
                         });
@@ -233,6 +261,18 @@ public class MainActivity extends AppCompatActivity
                         } catch (IllegalStateException e){
                                 Toast.makeText(MainActivity.this, "Disconnected! Restart", Toast.LENGTH_LONG).show();
                         }
+
+                        add_fields.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View view) {
+                                        EditText tv = new EditText(MainActivity.this);
+                                        tv.setText("New");
+                                        LinearLayout ll = (LinearLayout)findViewById(R.id.tab2);
+                                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        ll.addView(tv, lp);
+                                }
+
+                        });
                 }
     }
 
