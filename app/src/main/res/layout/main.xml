@@ -1,167 +1,197 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?><!--Linear layout as the root layout-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".socket.client.MainActivity">
 
-    <LinearLayout
+    <TabHost
+        android:id="@+id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/meastemp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="meas temp" />
+            <!-- Tab widget to select the tab -->
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/meas_temperature"
-                android:layout_width="225dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:clickable="false"
-                android:enabled="false"
-                android:inputType="textPersonName"
-                android:text="Name" />
+            <!-- FrameLayout which contains the data of the activity -->
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- for tab 1 -->
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFC0CB"
+                    android:orientation="vertical">
+
+                    <!-- Text View for applying the text to the tab -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/meastemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="meas temp" />
+
+                        <EditText
+                            android:id="@+id/meas_temperature"
+                            android:layout_width="225dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:clickable="false"
+                            android:enabled="false"
+                            android:inputType="textPersonName"
+                            android:text="Name" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/temp_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/temp"
+                            android:layout_width="46dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="temp zadanie" />
+
+                        <EditText
+                            android:id="@+id/assign_temperature"
+                            android:layout_width="175dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+
+                            android:clickable="false"
+                            android:ems="10"
+                            android:enabled="true"
+                            android:inputType="number" />
+
+                        <Button
+                            android:id="@+id/button_read_assign_temp"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Read temp" />
+
+                        <Button
+                            android:id="@+id/button_write_assign_temp"
+                            android:layout_width="88dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Write temp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/time_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+
+                        <EditText
+                            android:id="@+id/editTextNumber6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="number" />
+
+                        <Button
+                            android:id="@+id/button7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Button" />
+
+                        <Button
+                            android:id="@+id/button8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Button" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/editText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="Original message algo" />
+
+                        <Button
+                            android:id="@+id/send_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Send" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/disconnect_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/disconnect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Disconnect" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- for tab 2 -->
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#90ee90"
+                    android:orientation="vertical">
+
+                    <!-- Text View for applying the text to the tab -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/getPrograms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="getPrograms" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/temp_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/temp"
-                android:layout_width="46dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="temp zadanie" />
-
-            <EditText
-                android:id="@+id/assign_temperature"
-                android:layout_width="175dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-
-                android:clickable="false"
-                android:ems="10"
-                android:enabled="true"
-                android:inputType="number" />
-
-            <Button
-                android:id="@+id/button_read_assign_temp"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Read temp" />
-
-            <Button
-                android:id="@+id/button_write_assign_temp"
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Write temp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/time_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
-
-            <EditText
-                android:id="@+id/editTextNumber6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button" />
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Original message algo" />
-
-            <Button
-                android:id="@+id/send_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Send" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/getPrograms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="getPrograms" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/disconnect_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/disconnect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Disconnect" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </TabHost>
+</LinearLayout>
