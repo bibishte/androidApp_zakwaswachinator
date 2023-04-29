@@ -218,9 +218,14 @@ public class MainActivity extends AppCompatActivity
                                                 EditText p_name = new EditText(MainActivity.this);
                                                 p_name.setText(ps.progName);
                                                 p_name_tv.setText("Program Name");
-                                                LinearLayout ll = (LinearLayout)findViewById(R.id.tab2);
-                                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                //LinearLayout ll = (LinearLayout)findViewById(R.id.tab2);
+                                                //LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                        //LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                                LinearLayout ll = findViewById(R.id.linear_layout_tab2);
+                                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                lp.setMargins(15, 0, 15, 0);
+
                                                 ll.addView(p_name_tv, lp);
                                                 ll.addView(p_name, lp);
 
@@ -340,15 +345,14 @@ public class MainActivity extends AppCompatActivity
                                         steps_in_program.setText("Steps");
                                         add_program.setText("Add");
 
-//                                        ScrollView scrollView = new ScrollView(MainActivity.this);
-//                                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                                        scrollView.setLayoutParams(layoutParams);
+                                        LinearLayout ll_tab3 = findViewById(R.id.linear_layout_tab3);
 
-                                        LinearLayout ll = (LinearLayout)findViewById(R.id.tab3);
-                                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                                        ll.addView(steps_in_program, lp);
-                                        ll.addView(add_program, lp);
+                                        LinearLayout.LayoutParams lp_tab3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        lp_tab3.setMargins(15, 0, 15, 0);
+
+
+                                        ll_tab3.addView(steps_in_program, lp_tab3);
+                                        ll_tab3.addView(add_program, lp_tab3);
 
                                         add_program.setOnClickListener(new View.OnClickListener() {
                                                 public void onClick(View view) {
@@ -366,49 +370,49 @@ public class MainActivity extends AppCompatActivity
                                                         for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
                                                                 zadanie_text[i]=new EditText(MainActivity.this);
                                                                 zadanie_text[i].setText("zadanie");
-                                                                ll.addView(zadanie_text[i], lp);
+                                                                ll_tab3.addView(zadanie_text[i], lp_tab3);
 
                                                                 kp_text[i]=new EditText(MainActivity.this);
                                                                 kp_text[i].setText("kp");
-                                                                ll.addView(kp_text[i], lp);
+                                                                ll_tab3.addView(kp_text[i], lp_tab3);
 
                                                                 kid_text[i]=new EditText(MainActivity.this);
                                                                 kid_text[i].setText("kid");
-                                                                ll.addView(kid_text[i], lp);
+                                                                ll_tab3.addView(kid_text[i], lp_tab3);
 
                                                                 limit_text[i]=new EditText(MainActivity.this);
                                                                 limit_text[i].setText("limit");
-                                                                ll.addView(limit_text[i], lp);
+                                                                ll_tab3.addView(limit_text[i], lp_tab3);
 
                                                                 kd_text[i]=new EditText(MainActivity.this);
                                                                 kd_text[i].setText("kd");
-                                                                ll.addView(kd_text[i], lp);
+                                                                ll_tab3.addView(kd_text[i], lp_tab3);
 
                                                                 timestart_text[i]=new EditText(MainActivity.this);
                                                                 timestart_text[i].setText("time start");
-                                                                ll.addView(timestart_text[i], lp);
+                                                                ll_tab3.addView(timestart_text[i], lp_tab3);
 
                                                                 timestop_text[i]=new EditText(MainActivity.this);
                                                                 timestop_text[i].setText("time stop");
-                                                                ll.addView(timestop_text[i], lp);
+                                                                ll_tab3.addView(timestop_text[i], lp_tab3);
 
                                                                 time_text[i]=new EditText(MainActivity.this);
                                                                 time_text[i].setText("time");
-                                                                ll.addView(time_text[i], lp);
+                                                                ll_tab3.addView(time_text[i], lp_tab3);
 
                                                                 rele1On_text[i]=new EditText(MainActivity.this);
                                                                 rele1On_text[i].setText("rele1On");
-                                                                ll.addView(rele1On_text[i], lp);
+                                                                ll_tab3.addView(rele1On_text[i], lp_tab3);
 
                                                                 rele3On_text[i]=new EditText(MainActivity.this);
                                                                 rele3On_text[i].setText("rele3On");
-                                                                ll.addView(rele3On_text[i], lp);
+                                                                ll_tab3.addView(rele3On_text[i], lp_tab3);
 
                                                         }
 
                                                         Button add_steps= new Button(MainActivity.this);
                                                         add_steps.setText("Add step");
-                                                        ll.addView(add_steps, lp);
+                                                        ll_tab3.addView(add_steps, lp_tab3);
 
 
                                                         add_steps.setOnClickListener(new View.OnClickListener() {

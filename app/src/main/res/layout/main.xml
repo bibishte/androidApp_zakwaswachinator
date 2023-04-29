@@ -175,70 +175,60 @@
 
                     <!-- for tab 2 -->
 
-                    <ScrollView
-                        android:id="@+id/sc1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <LinearLayout
-                            android:id="@+id/tab2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:background="#90ee90">
 
-                            <!-- Text View for applying the text to the tab -->
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="#90ee90">
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
                             <LinearLayout
+                                android:id="@+id/linear_layout_tab2"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:orientation="horizontal">
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" >
 
                                 <Button
                                     android:id="@+id/getPrograms"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:text="getPrograms" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:orientation="horizontal">
 
                                 <Button
                                     android:id="@+id/add_fields"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="add fileds" />
+                                    android:text="add_fields" />
                             </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
 
 
+                    <LinearLayout
+                        android:id="@+id/tab3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="#90ee90">
 
-                        </LinearLayout>
-                    </ScrollView>
-
-
-
-                    <!-- for tab 3 -->
-<!--                    <ScrollView-->
-<!--                        android:id="@+id/sc2"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:background="#CDDC39">-->
-
-                        <LinearLayout
-                            android:id="@+id/tab3"
+                        <ScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:background="#add8e6">
+                            android:layout_height="match_parent">
 
-                            <!-- Text View for applying the text to the tab -->
+                            <LinearLayout
+                                android:id="@+id/linear_layout_tab3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" >
 
-
-
-                        </LinearLayout>
-<!--                    </ScrollView>-->
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
                 </FrameLayout>
         </LinearLayout>
     </TabHost>
