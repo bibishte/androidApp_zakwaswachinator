@@ -2,15 +2,12 @@ package com.example.tcp_test.socket.client;
 
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,17 +17,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.tcp_test.R;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 /*Display Activity with sending messages to server*/
 
 @SuppressLint("NewApi")
@@ -95,6 +90,11 @@ public class MainActivity extends AppCompatActivity
                         tabhost.addTab(spec);
 
 
+                        // Code for adding Tab 3 to the tabhost
+                        spec = tabhost.newTabSpec("Tab Three");
+                        spec.setContent(R.id.tab3);
+                        spec.setIndicator("Tab Three");
+                        tabhost.addTab(spec);
 
 
 
@@ -335,15 +335,96 @@ public class MainActivity extends AppCompatActivity
 
                         add_fields.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View view) {
-                                        EditText tv = new EditText(MainActivity.this);
-                                        tv.setText("New");
-                                        LinearLayout ll = (LinearLayout)findViewById(R.id.tab2);
+                                        EditText steps_in_program = new EditText(MainActivity.this);
+                                        Button add_program= new Button(MainActivity.this);
+                                        steps_in_program.setText("Steps");
+                                        add_program.setText("Add");
+
+//                                        ScrollView scrollView = new ScrollView(MainActivity.this);
+//                                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//                                        scrollView.setLayoutParams(layoutParams);
+
+                                        LinearLayout ll = (LinearLayout)findViewById(R.id.tab3);
                                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                                        ll.addView(tv, lp);
+                                        ll.addView(steps_in_program, lp);
+                                        ll.addView(add_program, lp);
+
+                                        add_program.setOnClickListener(new View.OnClickListener() {
+                                                public void onClick(View view) {
+                                                        //tabhost.setCurrentTab(2);
+                                                        EditText[] zadanie_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] kp_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] kid_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] limit_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] kd_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] timestart_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] timestop_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] time_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] rele1On_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        EditText[] rele3On_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+                                                        for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
+                                                                zadanie_text[i]=new EditText(MainActivity.this);
+                                                                zadanie_text[i].setText("zadanie");
+                                                                ll.addView(zadanie_text[i], lp);
+
+                                                                kp_text[i]=new EditText(MainActivity.this);
+                                                                kp_text[i].setText("kp");
+                                                                ll.addView(kp_text[i], lp);
+
+                                                                kid_text[i]=new EditText(MainActivity.this);
+                                                                kid_text[i].setText("kid");
+                                                                ll.addView(kid_text[i], lp);
+
+                                                                limit_text[i]=new EditText(MainActivity.this);
+                                                                limit_text[i].setText("limit");
+                                                                ll.addView(limit_text[i], lp);
+
+                                                                kd_text[i]=new EditText(MainActivity.this);
+                                                                kd_text[i].setText("kd");
+                                                                ll.addView(kd_text[i], lp);
+
+                                                                timestart_text[i]=new EditText(MainActivity.this);
+                                                                timestart_text[i].setText("time start");
+                                                                ll.addView(timestart_text[i], lp);
+
+                                                                timestop_text[i]=new EditText(MainActivity.this);
+                                                                timestop_text[i].setText("time stop");
+                                                                ll.addView(timestop_text[i], lp);
+
+                                                                time_text[i]=new EditText(MainActivity.this);
+                                                                time_text[i].setText("time");
+                                                                ll.addView(time_text[i], lp);
+
+                                                                rele1On_text[i]=new EditText(MainActivity.this);
+                                                                rele1On_text[i].setText("rele1On");
+                                                                ll.addView(rele1On_text[i], lp);
+
+                                                                rele3On_text[i]=new EditText(MainActivity.this);
+                                                                rele3On_text[i].setText("rele3On");
+                                                                ll.addView(rele3On_text[i], lp);
+
+                                                        }
+
+                                                        Button add_steps= new Button(MainActivity.this);
+                                                        add_steps.setText("Add step");
+                                                        ll.addView(add_steps, lp);
+
+
+                                                        add_steps.setOnClickListener(new View.OnClickListener() {
+                                                                public void onClick(View view) {
+                                                                        tabhost.setCurrentTab(1);
+
+                                                                }
+                                                        });
+
+                                                }
+
+                                        });
                                 }
 
                         });
+
                 }
     }
 
