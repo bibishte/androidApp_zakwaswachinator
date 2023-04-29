@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -223,17 +224,87 @@ public class MainActivity extends AppCompatActivity
                                                 ll.addView(p_name_tv, lp);
                                                 ll.addView(p_name, lp);
 
+
+
+
                                                 for(OperationParam op : ps.program)
                                                 {
-                                                        TextView op_name_tv=new TextView(MainActivity.this);
-                                                        EditText op_name = new EditText(MainActivity.this);
-                                                        op_name_tv.setText("Zadanie");
-                                                        op_name.setText(String.valueOf(op.zadanie));
-                                                        LinearLayout ll1= (LinearLayout)findViewById(R.id.tab2);
-                                                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                        ll.addView(op_name_tv, lp1);
-                                                        ll1.addView(op_name, lp1);
+                                                        TextView op_zadanie_tv=new TextView(MainActivity.this);
+                                                        EditText op_zadanie = new EditText(MainActivity.this);
+                                                        op_zadanie_tv.setText("Zadanie");
+                                                        op_zadanie.setText(String.valueOf(op.zadanie));
+                                                        ll.addView(op_zadanie_tv, lp);
+                                                        ll.addView(op_zadanie, lp);
+
+
+                                                        TextView op_kp_tv=new TextView(MainActivity.this);
+                                                        EditText op_kp = new EditText(MainActivity.this);
+                                                        op_kp_tv.setText("Kp");
+                                                        op_kp.setText(String.valueOf(op.kp));
+                                                        ll.addView(op_kp_tv, lp);
+                                                        ll.addView(op_kp, lp);
+
+
+                                                        TextView op_kid_tv=new TextView(MainActivity.this);
+                                                        EditText op_kid = new EditText(MainActivity.this);
+                                                        op_kid_tv.setText("Kid");
+                                                        op_kid.setText(String.valueOf(op.kid));
+                                                        ll.addView(op_kid_tv, lp);
+                                                        ll.addView(op_kid, lp);
+
+
+                                                        TextView op_limit_tv=new TextView(MainActivity.this);
+                                                        EditText op_limit = new EditText(MainActivity.this);
+                                                        op_limit_tv.setText("Limit");
+                                                        op_limit.setText(String.valueOf(op.limit));
+                                                        ll.addView(op_limit_tv, lp);
+                                                        ll.addView(op_limit, lp);
+
+
+                                                        TextView op_kd_tv=new TextView(MainActivity.this);
+                                                        EditText op_kd = new EditText(MainActivity.this);
+                                                        op_kd_tv.setText("Kd");
+                                                        op_kd.setText(String.valueOf(op.kd));
+                                                        ll.addView(op_kd_tv, lp);
+                                                        ll.addView(op_kd, lp);
+
+                                                        TextView op_timeStart_tv=new TextView(MainActivity.this);
+                                                        EditText op_timeStart = new EditText(MainActivity.this);
+                                                        op_timeStart_tv.setText("timeStart");
+                                                        op_timeStart.setText(String.valueOf(op.timeStart));
+                                                        ll.addView(op_timeStart_tv, lp);
+                                                        ll.addView(op_timeStart, lp);
+
+                                                        TextView op_timeStop_tv=new TextView(MainActivity.this);
+                                                        EditText op_timeStop = new EditText(MainActivity.this);
+                                                        op_timeStop_tv.setText("timeStop");
+                                                        op_timeStop.setText(String.valueOf(op.timeStop));
+                                                        ll.addView(op_timeStop_tv, lp);
+                                                        ll.addView(op_timeStop, lp);
+
+
+                                                        TextView op_time_tv=new TextView(MainActivity.this);
+                                                        EditText op_time = new EditText(MainActivity.this);
+                                                        op_time_tv.setText("time");
+                                                        op_time.setText(String.valueOf(op.time));
+                                                        ll.addView(op_time_tv, lp);
+                                                        ll.addView(op_time, lp);
+
+
+                                                        TextView op_rele1On_tv=new TextView(MainActivity.this);
+                                                        EditText op_rele1On = new EditText(MainActivity.this);
+                                                        op_rele1On_tv.setText("rele1On");
+                                                        op_rele1On.setText(String.valueOf(op.rele1On));
+                                                        ll.addView(op_rele1On_tv, lp);
+                                                        ll.addView(op_rele1On, lp);
+
+
+                                                        TextView op_rele3On_tv=new TextView(MainActivity.this);
+                                                        EditText op_rele3On = new EditText(MainActivity.this);
+                                                        op_rele3On_tv.setText("rele3On");
+                                                        op_rele3On.setText(String.valueOf(op.rele3On));
+                                                        ll.addView(op_rele3On_tv, lp);
+                                                        ll.addView(op_rele3On, lp);
                                                 }
                                         }
                                 }
