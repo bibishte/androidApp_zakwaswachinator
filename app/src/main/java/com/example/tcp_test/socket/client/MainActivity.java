@@ -3,6 +3,7 @@ package com.example.tcp_test.socket.client;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         private final OperationParam tmpOpParams=new OperationParam();
         //TabHost.TabSpec spec
         private TabHost.TabSpec spec;
+        private EditText progname_text;
         protected void onCreate(Bundle savedInstanceState) {
                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
                 if (SDK_INT > 8)
@@ -366,6 +368,7 @@ public class MainActivity extends AppCompatActivity
                                                 public void onClick(View view) {
 
                                                         //tabhost.setCurrentTab(2);
+                                                        progname_text = new EditText(MainActivity.this);
                                                         EditText[] zadanie_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
                                                         EditText[] kp_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
                                                         EditText[] kid_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
@@ -376,7 +379,16 @@ public class MainActivity extends AppCompatActivity
                                                         EditText[] time_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
                                                         EditText[] rele1On_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
                                                         EditText[] rele3On_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
+
+                                                        progname_text=new EditText(MainActivity.this);
+                                                        progname_text.setText("progname");
+                                                        ll_tab3.addView(progname_text, lp_tab3);
+
                                                         for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
+//                                                                progname_text[i]=new EditText(MainActivity.this);
+//                                                                progname_text[i].setText("progname");
+//                                                                ll_tab3.addView(progname_text[i], lp_tab3);
+
                                                                 zadanie_text[i]=new EditText(MainActivity.this);
                                                                 zadanie_text[i].setText("zadanie");
                                                                 ll_tab3.addView(zadanie_text[i], lp_tab3);
@@ -426,11 +438,56 @@ public class MainActivity extends AppCompatActivity
 
                                                         add_steps.setOnClickListener(new View.OnClickListener() {
                                                                 public void onClick(View view) {
+                                                                        //private final List<ProgramStruct> programs= new ArrayList<ProgramStruct>();
+                                                                        ProgramStruct tmpProgStruct=new ProgramStruct();
+                                                                        OperationParam[] tmpOperstionStruct= new OperationParam[Integer.parseInt(steps_in_program.getText().toString())];
+//                                                                        List<OperationParam> tmpOperstionStruct= new ArrayList<OperationParam>();
+                                                                        tmpProgStruct.progName=progname_text.getText().toString();
+                                                                        for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
+                                                                                System.out.println("hjsfjskfsf" + Float.valueOf(zadanie_text[i].getText().toString()) + "\n");
 
+                                                                                tmpOperstionStruct[i]=new OperationParam();
+                                                                                tmpOperstionStruct[i].zadanie=Float.valueOf(zadanie_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].kp=Float.valueOf(kp_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].kid=Float.valueOf(kid_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].limit=Float.valueOf(limit_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].kd=Float.valueOf(kd_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].timeStart=Float.valueOf(timestart_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].timeStop=Float.valueOf(timestop_text[i].getText().toString());
+                                                                                tmpOperstionStruct[i].time=Float.valueOf(time_text[i].getText().toString());
+                                                                                if(rele1On_text[i].getText().toString()=="t")
+                                                                                {
+                                                                                        tmpOperstionStruct[i].rele1On=true;
+                                                                                }else
+                                                                                {
+                                                                                        tmpOperstionStruct[i].rele1On=false;
+                                                                                }
+
+                                                                                if(rele3On_text[i].getText().toString()=="t")
+                                                                                {
+                                                                                        tmpOperstionStruct[i].rele3On=true;
+                                                                                }else
+                                                                                {
+                                                                                        tmpOperstionStruct[i].rele3On=false;
+                                                                                }
+
+
+
+                                                                                tmpProgStruct.program= Arrays.asList(tmpOperstionStruct);
+
+
+                                                                        }
+                                                                        programs.add(tmpProgStruct);
                                                                         tabhost.setCurrentTab(1);
 
-//
+                                                                      ViewGroup layout_progname = (ViewGroup) progname_text.getParent();
+                                                                        if(null!=layout_progname) //for safety only  as you are doing onClick
+                                                                                layout_progname.removeView(progname_text);
                                                                         for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
+//                                                                                ViewGroup layout_progname = (ViewGroup) progname_text[i].getParent();
+//                                                                                if(null!=layout_progname) //for safety only  as you are doing onClick
+//                                                                                        layout_progname.removeView(progname_text[i]);
+
                                                                                 ViewGroup layout_kp_text = (ViewGroup) kp_text[i].getParent();
                                                                                 if(null!=layout_kp_text) //for safety only  as you are doing onClick
                                                                                         layout_kp_text.removeView(kp_text[i]);
