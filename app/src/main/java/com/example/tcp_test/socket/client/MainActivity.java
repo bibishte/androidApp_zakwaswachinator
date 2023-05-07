@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         private final List<ProgramStruct> programs= new ArrayList<ProgramStruct>();
 
         private final OperationParam tmpOpParams=new OperationParam();
+        //TabHost.TabSpec spec
+        private TabHost.TabSpec spec;
         protected void onCreate(Bundle savedInstanceState) {
                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
                 if (SDK_INT > 8)
@@ -72,7 +74,8 @@ public class MainActivity extends AppCompatActivity
                         tabhost.setup();
 
                         // Code for adding Tab 1 to the tabhost
-                        TabHost.TabSpec spec = tabhost.newTabSpec("Tab One");
+                        //TabHost.TabSpec spec = tabhost.newTabSpec("Tab One");
+                        spec = tabhost.newTabSpec("Tab One");
                         spec.setContent(R.id.tab1);
 
                         // setting the name of the tab 1 as "Tab One"
@@ -340,13 +343,18 @@ public class MainActivity extends AppCompatActivity
 
                         add_fields.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View view) {
+                                        // Code for adding Tab 3 to the tabhost
+//                                        spec = tabhost.newTabSpec("Tab Three");
+//                                        spec.setContent(R.id.tab3);
+//                                        spec.setIndicator("Tab Three");
+//                                        tabhost.addTab(spec);
                                         EditText steps_in_program = new EditText(MainActivity.this);
                                         Button add_program= new Button(MainActivity.this);
                                         steps_in_program.setText("Steps");
                                         add_program.setText("Add");
 
                                         LinearLayout ll_tab3 = findViewById(R.id.linear_layout_tab3);
-
+                                        //LinearLayout ll_tab3=new LinearLayout(MainActivity.this);
                                         LinearLayout.LayoutParams lp_tab3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                         lp_tab3.setMargins(15, 0, 15, 0);
 
@@ -356,6 +364,7 @@ public class MainActivity extends AppCompatActivity
 
                                         add_program.setOnClickListener(new View.OnClickListener() {
                                                 public void onClick(View view) {
+
                                                         //tabhost.setCurrentTab(2);
                                                         EditText[] zadanie_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
                                                         EditText[] kp_text = new EditText[Integer.parseInt(steps_in_program.getText().toString())];
@@ -417,8 +426,65 @@ public class MainActivity extends AppCompatActivity
 
                                                         add_steps.setOnClickListener(new View.OnClickListener() {
                                                                 public void onClick(View view) {
+
                                                                         tabhost.setCurrentTab(1);
 
+//
+                                                                        for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
+                                                                                ViewGroup layout_kp_text = (ViewGroup) kp_text[i].getParent();
+                                                                                if(null!=layout_kp_text) //for safety only  as you are doing onClick
+                                                                                        layout_kp_text.removeView(kp_text[i]);
+                                                                                ViewGroup layout_zadanie_text = (ViewGroup) zadanie_text[i].getParent();
+                                                                                if(null!=layout_zadanie_text) //for safety only  as you are doing onClick
+                                                                                        layout_zadanie_text.removeView(zadanie_text[i]);
+                                                                                ViewGroup layout_kid_text = (ViewGroup) kid_text[i].getParent();
+                                                                                if(null!=layout_kid_text) //for safety only  as you are doing onClick
+                                                                                        layout_kid_text.removeView(kid_text[i]);
+
+                                                                                ViewGroup layout_limit_text = (ViewGroup) limit_text[i].getParent();
+                                                                                if(null!=layout_limit_text) //for safety only  as you are doing onClick
+                                                                                        layout_limit_text.removeView(limit_text[i]);
+
+                                                                                ViewGroup layout_kd_text = (ViewGroup) kd_text[i].getParent();
+                                                                                if(null!=layout_kd_text) //for safety only  as you are doing onClick
+                                                                                        layout_kd_text.removeView(kd_text[i]);
+
+                                                                                ViewGroup layout_timestart_text = (ViewGroup) timestart_text[i].getParent();
+                                                                                if(null!=layout_timestart_text) //for safety only  as you are doing onClick
+                                                                                        layout_timestart_text.removeView(timestart_text[i]);
+
+                                                                                ViewGroup layout_timestop_text = (ViewGroup) timestop_text[i].getParent();
+                                                                                if(null!=layout_timestop_text) //for safety only  as you are doing onClick
+                                                                                        layout_timestop_text.removeView(timestop_text[i]);
+
+                                                                                ViewGroup layout_time_text = (ViewGroup) time_text[i].getParent();
+                                                                                if(null!=layout_time_text) //for safety only  as you are doing onClick
+                                                                                        layout_time_text.removeView(time_text[i]);
+
+                                                                                ViewGroup layout_rele1On_text = (ViewGroup) rele1On_text[i].getParent();
+                                                                                if(null!=layout_rele1On_text) //for safety only  as you are doing onClick
+                                                                                        layout_rele1On_text.removeView(rele1On_text[i]);
+
+                                                                                ViewGroup layout_rele3On_text = (ViewGroup) rele3On_text[i].getParent();
+                                                                                if(null!=layout_rele3On_text) //for safety only  as you are doing onClick
+                                                                                        layout_rele3On_text.removeView(rele3On_text[i]);
+                                                                        }
+
+//
+//
+                                                                        ViewGroup layout_steps_in_program = (ViewGroup) steps_in_program.getParent();
+                                                                        if(null!=layout_steps_in_program) //for safety only  as you are doing onClick
+                                                                                layout_steps_in_program.removeView(steps_in_program);
+
+
+                                                                        ViewGroup layout_add_program = (ViewGroup) add_program.getParent();
+                                                                        if(null!=layout_add_program) //for safety only  as you are doing onClick
+                                                                                layout_add_program.removeView(add_program);
+
+
+                                                                        ViewGroup layout_add_steps = (ViewGroup) add_steps.getParent();
+                                                                        if(null!=layout_add_steps) //for safety only  as you are doing onClick
+                                                                                layout_add_steps.removeView(add_steps);
                                                                 }
                                                         });
 
