@@ -4,18 +4,22 @@ import static com.example.tcp_test.socket.client.WelcomePage.getPortNo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
+import android.os.Build;
 import android.util.Log;
 
-public class TCPClient {
+public class TCPClient implements Serializable {
     private String serverMessage;
 
 	public String serverIp = "192.168.1.105";
@@ -48,6 +52,7 @@ public class TCPClient {
         	System.out.println("message: "+ message);
             out.println(message);
             out.flush();
+
         }
     }
  
@@ -158,6 +163,32 @@ public class TCPClient {
         return serverMessage_loc;
     }
 
+    public void sendStructData(OperationParam send_struct) throws IOException {
+        if (out != null && !out.checkError()) {
+
+            byte[] send_data_tmp = new byte[36];
+            byte[] send_data = new byte[34];
+            send_data_tmp=StructToByteArr(send_struct);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                send_data=Arrays.copyOfRange(send_data_tmp, 154, 187);
+            }
+            System.out.println("hmm " +send_data + "\n");
+            out.println(send_data);
+            out.flush();
+
+
+        }
+    }
+
+    public byte[] StructToByteArr(OperationParam send_struct) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(send_struct);
+        oos.flush();
+        byte [] data = bos.toByteArray();
+        return data;
+    }
 
     public ProgramStruct readStructData(String prog_name, int number_steps_in_prog) throws IOException {
         InputStream stream = socket.getInputStream();

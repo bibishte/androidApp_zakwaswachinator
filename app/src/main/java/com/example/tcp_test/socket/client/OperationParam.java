@@ -1,6 +1,8 @@
 package com.example.tcp_test.socket.client;
 
-public class OperationParam {
+import java.io.Serializable;
+
+public class OperationParam implements Serializable {
     public float zadanie;
     public float kp;
     public float kid;

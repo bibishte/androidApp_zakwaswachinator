@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,12 @@ public class MainActivity extends AppCompatActivity
         //TabHost.TabSpec spec
         private TabHost.TabSpec spec;
         private EditText progname_text;
+        private int numb_progs_struc;
+        private int numb_steps_prog;
+        private String numb_progs_struc_str;
+        private String numb_steps_prog_str;
+
+        private Timer timer = new Timer();
         protected void onCreate(Bundle savedInstanceState) {
                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
                 if (SDK_INT > 8)
@@ -328,7 +335,7 @@ public class MainActivity extends AppCompatActivity
                         });
 
                         try {
-                                Timer timer = new Timer();
+                                //Timer timer = new Timer();
                                 TimerTask timerTask = new TimerTask() {
                                         @Override
                                         public void run() {
@@ -338,7 +345,7 @@ public class MainActivity extends AppCompatActivity
                                                 }
                                         }
                                 };
-                                timer.schedule(timerTask,1000, 3000);
+                                timer.schedule(timerTask,1000, 7000);
                         } catch (IllegalStateException e){
                                 Toast.makeText(MainActivity.this, "Disconnected! Restart", Toast.LENGTH_LONG).show();
                         }
@@ -479,8 +486,35 @@ public class MainActivity extends AppCompatActivity
                                                                         }
                                                                         programs.add(tmpProgStruct);
                                                                         tabhost.setCurrentTab(1);
+                                                                        numb_progs_struc=programs.size();
+                                                                        numb_progs_struc_str="transferStruct=" + numb_progs_struc;
+                                                                        //numb_steps_prog;
+                                                                        mTcpClient.sendMessage(numb_progs_struc_str);
 
-                                                                      ViewGroup layout_progname = (ViewGroup) progname_text.getParent();
+                                                                        final Handler handler = new Handler();
+                                                                        handler.postDelayed(new Runnable() {
+                                                                                @Override
+                                                                                public void run() {
+                                                                                        for (ProgramStruct progs : programs) {
+                                                                                                mTcpClient.sendMessage(progs.progName);
+                                                                                                for(OperationParam op : progs.program)
+                                                                                                {
+                                                                                                        try {
+
+                                                                                                                mTcpClient.sendStructData(op);
+                                                                                                        } catch (
+                                                                                                                IOException e) {
+                                                                                                                throw new RuntimeException(e);
+                                                                                                        }
+                                                                                                }
+
+
+                                                                                        }
+                                                                                }
+                                                                        }, 1000);
+
+
+                                                                                ViewGroup layout_progname = (ViewGroup) progname_text.getParent();
                                                                         if(null!=layout_progname) //for safety only  as you are doing onClick
                                                                                 layout_progname.removeView(progname_text);
                                                                         for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
