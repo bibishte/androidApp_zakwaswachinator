@@ -5,10 +5,12 @@ import static com.example.tcp_test.socket.client.WelcomePage.getPortNo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -164,21 +166,37 @@ public class TCPClient implements Serializable {
     }
 
     public void sendStructData(OperationParam send_struct) throws IOException {
-        if (out != null && !out.checkError()) {
+//        if (out != null && !out.checkError()) {
+//
+//            byte[] send_data_tmp = new byte[36];
+//            byte[] send_data = new byte[34];
+//            send_data_tmp=StructToByteArr(send_struct);
+//
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+//                send_data=Arrays.copyOfRange(send_data_tmp, 154, 187);
+//            }
+//            //System.out.println("hmm " +send_data + "\n");
+//            out.println(send_data);
+//            out.flush();
+//
+//
+//        }
 
-            byte[] send_data_tmp = new byte[36];
-            byte[] send_data = new byte[34];
-            send_data_tmp=StructToByteArr(send_struct);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                send_data=Arrays.copyOfRange(send_data_tmp, 154, 187);
-            }
-            System.out.println("hmm " +send_data + "\n");
-            out.println(send_data);
-            out.flush();
+        OutputStream out1 = new DataOutputStream(socket.getOutputStream());
+        DataOutputStream dos = new DataOutputStream(out1);
 
 
+        byte[] send_data_tmp = new byte[36];
+        byte[] send_data = new byte[34];
+        send_data_tmp=StructToByteArr(send_struct);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            send_data=Arrays.copyOfRange(send_data_tmp, 154, 187);
         }
+
+
+        dos.write(send_data, 0, 33);
     }
 
     public byte[] StructToByteArr(OperationParam send_struct) throws IOException {

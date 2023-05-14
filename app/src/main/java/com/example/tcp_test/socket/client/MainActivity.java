@@ -497,15 +497,24 @@ public class MainActivity extends AppCompatActivity
                                                                                 public void run() {
                                                                                         for (ProgramStruct progs : programs) {
                                                                                                 mTcpClient.sendMessage(progs.progName);
+                                                                                                numb_steps_prog=progs.program.size();
+                                                                                                numb_steps_prog_str= String.valueOf(numb_progs_struc);
+                                                                                                mTcpClient.sendMessage(numb_steps_prog_str);
                                                                                                 for(OperationParam op : progs.program)
                                                                                                 {
-                                                                                                        try {
+                                                                                                        final Handler handler = new Handler();
+                                                                                                        handler.postDelayed(new Runnable() {
+                                                                                                                @Override
+                                                                                                                public void run() {
+                                                                                                                        try {
 
-                                                                                                                mTcpClient.sendStructData(op);
-                                                                                                        } catch (
-                                                                                                                IOException e) {
-                                                                                                                throw new RuntimeException(e);
-                                                                                                        }
+                                                                                                                                mTcpClient.sendStructData(op);
+                                                                                                                        } catch (
+                                                                                                                                IOException e) {
+                                                                                                                                throw new RuntimeException(e);
+                                                                                                                        }
+                                                                                                                }
+                                                                                                        }, 1000);
                                                                                                 }
 
 
