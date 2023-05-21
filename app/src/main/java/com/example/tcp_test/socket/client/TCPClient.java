@@ -166,21 +166,7 @@ public class TCPClient implements Serializable {
     }
 
     public void sendStructData(OperationParam send_struct) throws IOException {
-//        if (out != null && !out.checkError()) {
-//
-//            byte[] send_data_tmp = new byte[36];
-//            byte[] send_data = new byte[34];
-//            send_data_tmp=StructToByteArr(send_struct);
-//
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-//                send_data=Arrays.copyOfRange(send_data_tmp, 154, 187);
-//            }
-//            //System.out.println("hmm " +send_data + "\n");
-//            out.println(send_data);
-//            out.flush();
-//
-//
-//        }
+
 
 
         OutputStream out1 = new DataOutputStream(socket.getOutputStream());

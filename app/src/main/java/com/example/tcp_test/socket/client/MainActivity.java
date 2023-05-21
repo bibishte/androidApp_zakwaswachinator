@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity
         private String numb_progs_struc_str;
         private String numb_steps_prog_str;
 
+        private String prog_name_steps_prog;
+
         private Timer timer = new Timer();
         protected void onCreate(Bundle savedInstanceState) {
                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -194,7 +196,12 @@ public class MainActivity extends AppCompatActivity
 
 
                                         mTcpClient.sendMessage("countProgs?");
-                                        numb_progs=mTcpClient.readMssg();
+                                        final Handler handler = new Handler();
+//                                        handler.postDelayed(new Runnable() {
+//                                                                    @Override
+//                                                                    public void run() {
+                                        numb_progs = mTcpClient.readMssg();
+
                                         number_progs=Integer.parseInt(numb_progs);
                                         for(int i=0; i<number_progs; i++) {
                                                 prog_name=null;
@@ -223,6 +230,10 @@ public class MainActivity extends AppCompatActivity
 
 
                                         }
+
+                                                                   // }
+                                        //}, 200);
+
                                         System.out.println("111111");
                                         for(ProgramStruct ps : programs)
                                         {
@@ -333,22 +344,22 @@ public class MainActivity extends AppCompatActivity
                                         setContentView(R.layout.welcome_page);
                                 }
                         });
-
-                        try {
-                                //Timer timer = new Timer();
-                                TimerTask timerTask = new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                                //Download file here and refresh
-                                                if(mTcpClient!=null) {
-                                                        updateMeasTemp();
-                                                }
-                                        }
-                                };
-                                timer.schedule(timerTask,1000, 7000);
-                        } catch (IllegalStateException e){
-                                Toast.makeText(MainActivity.this, "Disconnected! Restart", Toast.LENGTH_LONG).show();
-                        }
+//to be uncommented needs stop when reading struct
+//                        try {
+//                                //Timer timer = new Timer();
+//                                TimerTask timerTask = new TimerTask() {
+//                                        @Override
+//                                        public void run() {
+//                                                //Download file here and refresh
+//                                                if(mTcpClient!=null) {
+//                                                        updateMeasTemp();
+//                                                }
+//                                        }
+//                                };
+//                                timer.schedule(timerTask,1000, 7000);
+//                        } catch (IllegalStateException e){
+//                                Toast.makeText(MainActivity.this, "Disconnected! Restart", Toast.LENGTH_LONG).show();
+//                        }
 
                         add_fields.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View view) {
@@ -491,39 +502,40 @@ public class MainActivity extends AppCompatActivity
                                                                         //numb_steps_prog;
                                                                         mTcpClient.sendMessage(numb_progs_struc_str);
 
-                                                                        final Handler handler = new Handler();
-                                                                        handler.postDelayed(new Runnable() {
-                                                                                @Override
-                                                                                public void run() {
-                                                                                        for (ProgramStruct progs : programs) {
-                                                                                                mTcpClient.sendMessage(progs.progName);
-                                                                                                numb_steps_prog=progs.program.size();
-                                                                                                numb_steps_prog_str= String.valueOf(numb_progs_struc);
-                                                                                                mTcpClient.sendMessage(numb_steps_prog_str);
-                                                                                                for(OperationParam op : progs.program)
-                                                                                                {
-                                                                                                        final Handler handler = new Handler();
-                                                                                                        handler.postDelayed(new Runnable() {
-                                                                                                                @Override
-                                                                                                                public void run() {
-                                                                                                                        try {
+                                                                        for (ProgramStruct progs : programs) {
+                                                                                numb_steps_prog=progs.program.size();
+                                                                                numb_steps_prog_str= String.valueOf(numb_steps_prog);
 
-                                                                                                                                mTcpClient.sendStructData(op);
-                                                                                                                        } catch (
-                                                                                                                                IOException e) {
-                                                                                                                                throw new RuntimeException(e);
-                                                                                                                        }
-                                                                                                                }
-                                                                                                        }, 1000);
+                                                                                prog_name_steps_prog=progs.progName + " " + numb_steps_prog;
+                                                                                mTcpClient.sendMessage(prog_name_steps_prog);
+                                                                                for(OperationParam op : progs.program)
+                                                                                {
+
+                                                                                        try
+                                                                                        {
+                                                                                                Thread.sleep(2000);
+
+                                                                                                try {
+
+                                                                                                        mTcpClient.sendStructData(op);
+                                                                                                } catch (IOException e) {
+                                                                                                        throw new RuntimeException(e);
                                                                                                 }
-
-
                                                                                         }
+                                                                                        catch(InterruptedException ex)
+                                                                                        {
+                                                                                                Thread.currentThread().interrupt();
+                                                                                        }
+
+
+
                                                                                 }
-                                                                        }, 1000);
 
 
-                                                                                ViewGroup layout_progname = (ViewGroup) progname_text.getParent();
+
+                                                                        }
+
+                                                                        ViewGroup layout_progname = (ViewGroup) progname_text.getParent();
                                                                         if(null!=layout_progname) //for safety only  as you are doing onClick
                                                                                 layout_progname.removeView(progname_text);
                                                                         for (int i = 0; i < Integer.parseInt(steps_in_program.getText().toString()); ++i) {
