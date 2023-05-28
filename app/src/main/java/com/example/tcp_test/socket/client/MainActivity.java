@@ -95,28 +95,28 @@ public class MainActivity extends AppCompatActivity
 
                         // Code for adding Tab 1 to the tabhost
                         //TabHost.TabSpec spec = tabhost.newTabSpec("Tab One");
-                        spec = tabhost.newTabSpec("Tab One");
+                        spec = tabhost.newTabSpec("Control");
                         spec.setContent(R.id.tab1);
 
                         // setting the name of the tab 1 as "Tab One"
-                        spec.setIndicator("Tab One");
+                        spec.setIndicator("Control");
 
                         // adding the tab to tabhost
                         tabhost.addTab(spec);
 
                         // Code for adding Tab 2 to the tabhost
-                        spec = tabhost.newTabSpec("Tab Two");
+                        spec = tabhost.newTabSpec("Get/Set prog");
                         spec.setContent(R.id.tab2);
 
                         // setting the name of the tab 1 as "Tab Two"
-                        spec.setIndicator("Tab Two");
+                        spec.setIndicator("Get/Set prog");
                         tabhost.addTab(spec);
 
 
                         // Code for adding Tab 3 to the tabhost
-                        spec = tabhost.newTabSpec("Tab Three");
+                        spec = tabhost.newTabSpec("Detail prog");
                         spec.setContent(R.id.tab3);
-                        spec.setIndicator("Tab Three");
+                        spec.setIndicator("Detail prog");
                         tabhost.addTab(spec);
 
 
