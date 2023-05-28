@@ -17,9 +17,13 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 
 import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 public class TCPClient implements Serializable {
     private String serverMessage;
@@ -165,6 +169,18 @@ public class TCPClient implements Serializable {
         return serverMessage_loc;
     }
 
+
+    public void sendByteArr(byte[] senddata) throws IOException {
+
+
+
+        OutputStream out1 = new DataOutputStream(socket.getOutputStream());
+        DataOutputStream dos = new DataOutputStream(out1);
+
+        dos.write(senddata, 0, senddata.length);
+    }
+
+
     public void sendStructData(OperationParam send_struct) throws IOException {
 
 
@@ -182,7 +198,25 @@ public class TCPClient implements Serializable {
         }
 
 
-        dos.write(send_data, 0, 33);
+            dos.write(send_data, 0, 33);
+    }
+
+
+    public String StructToStr(byte[] bytearr) throws IOException {
+
+        return bytearr.toString();
+    }
+
+
+    //@RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    public String concatStrytearr(final byte[] bytes, final String str) {
+        final StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(b);
+        }
+        sb.append(str);
+        return sb.toString();
     }
 
     public byte[] StructToByteArr(OperationParam send_struct) throws IOException {
@@ -191,7 +225,11 @@ public class TCPClient implements Serializable {
         oos.writeObject(send_struct);
         oos.flush();
         byte [] data = bos.toByteArray();
-        return data;
+        byte [] senddata = bos.toByteArray();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            senddata=Arrays.copyOfRange(data, 154, 188);
+        }
+        return senddata;
     }
 
     public ProgramStruct readStructData(String prog_name, int number_steps_in_prog) throws IOException {

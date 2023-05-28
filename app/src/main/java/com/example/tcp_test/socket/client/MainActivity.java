@@ -2,6 +2,9 @@ package com.example.tcp_test.socket.client;
 
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +69,12 @@ public class MainActivity extends AppCompatActivity
         private String numb_steps_prog_str;
 
         private String prog_name_steps_prog;
+        private byte[] prog_name_steps;
+        private byte[] steps;
+
+        private byte[] send_prog=null;
+        private byte[] send_data_tmp = new byte[35];
+
 
         private Timer timer = new Timer();
         protected void onCreate(Bundle savedInstanceState) {
@@ -499,40 +508,62 @@ public class MainActivity extends AppCompatActivity
                                                                         tabhost.setCurrentTab(1);
                                                                         numb_progs_struc=programs.size();
                                                                         numb_progs_struc_str="transferStruct=" + numb_progs_struc;
-                                                                        //numb_steps_prog;
+
                                                                         mTcpClient.sendMessage(numb_progs_struc_str);
 
-                                                                        for (ProgramStruct progs : programs) {
-                                                                                numb_steps_prog=progs.program.size();
-                                                                                numb_steps_prog_str= String.valueOf(numb_steps_prog);
 
-                                                                                prog_name_steps_prog=progs.progName + " " + numb_steps_prog;
-                                                                                mTcpClient.sendMessage(prog_name_steps_prog);
+                                                                        for (ProgramStruct progs : programs) {
+
+                                                                                numb_steps_prog=progs.program.size();
+                                                                                prog_name_steps_prog=progs.progName +"\0"+numb_steps_prog+"\0";
+                                                                                prog_name_steps=prog_name_steps_prog.getBytes(Charset.forName("ASCII"));
+
                                                                                 for(OperationParam op : progs.program)
                                                                                 {
+                                                                                        send_data_tmp=null;
 
-                                                                                        try
-                                                                                        {
-                                                                                                Thread.sleep(2000);
-
-                                                                                                try {
-
-                                                                                                        mTcpClient.sendStructData(op);
-                                                                                                } catch (IOException e) {
-                                                                                                        throw new RuntimeException(e);
+                                                                                        try {
+                                                                                                send_data_tmp=mTcpClient.StructToByteArr(op);
+                                                                                                if(steps==null)
+                                                                                                {
+                                                                                                        steps=send_data_tmp;
                                                                                                 }
+                                                                                                else
+                                                                                                {
+                                                                                                        steps= ByteBuffer.allocate(steps.length + send_data_tmp.length)
+                                                                                                                .put(steps)
+                                                                                                                .put(send_data_tmp)
+                                                                                                                .array();
+                                                                                                }
+                                                                                        } catch (
+                                                                                                IOException e) {
+                                                                                                throw new RuntimeException(e);
                                                                                         }
-                                                                                        catch(InterruptedException ex)
-                                                                                        {
-                                                                                                Thread.currentThread().interrupt();
-                                                                                        }
-
 
 
                                                                                 }
-
-
-
+                                                                                if(send_prog==null)
+                                                                                {
+                                                                                        send_prog = ByteBuffer.allocate(prog_name_steps.length + steps.length)
+                                                                                                .put(prog_name_steps)
+                                                                                                .put(steps)
+                                                                                                .array();
+                                                                                }
+                                                                                else {
+                                                                                        send_prog = ByteBuffer.allocate(send_prog.length + prog_name_steps.length + steps.length)
+                                                                                                .put(send_prog)
+                                                                                                .put(prog_name_steps)
+                                                                                                .put(steps)
+                                                                                                .array();
+                                                                                }
+                                                                                steps=null;
+                                                                        }
+                                                                        //System.out.println("hii");
+                                                                        try {
+                                                                                mTcpClient.sendByteArr(send_prog);
+                                                                                send_prog=null;
+                                                                        } catch (IOException e) {
+                                                                                throw new RuntimeException(e);
                                                                         }
 
                                                                         ViewGroup layout_progname = (ViewGroup) progname_text.getParent();
