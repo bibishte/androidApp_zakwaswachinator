@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity
 
                         ipAddressOfServerDevice = WelcomePage.getServerIp();
 
-                        final EditText editText = findViewById(R.id.editText);
+//                        final EditText editText = findViewById(R.id.editText);
                         final EditText temp = findViewById(R.id.assign_temperature);
 
-                        Button send = findViewById(R.id.send_button);
+//                        Button send = findViewById(R.id.send_button);
                         Button write_temp = findViewById(R.id.button_write_assign_temp);
                         Button read_temp = findViewById(R.id.button_read_assign_temp);
                         Button get_programs = findViewById(R.id.getPrograms);
@@ -152,18 +152,18 @@ public class MainActivity extends AppCompatActivity
                         }
 
 
-                        send.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                        String message = editText.getText().toString();
-                                        //sends the message to the server
-                                        if (mTcpClient != null)
-                                        {
-                                                mTcpClient.sendMessage(message);
-                                        }
-                                        editText.setText("");
-                                }
-                        });
+//                        send.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View view) {
+//                                        String message = editText.getText().toString();
+//                                        //sends the message to the server
+//                                        if (mTcpClient != null)
+//                                        {
+//                                                mTcpClient.sendMessage(message);
+//                                        }
+//                                        editText.setText("");
+//                                }
+//                        });
 
                         write_temp.setOnClickListener(new View.OnClickListener() {
                                 @Override
