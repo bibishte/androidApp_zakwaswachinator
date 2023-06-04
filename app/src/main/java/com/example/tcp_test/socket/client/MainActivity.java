@@ -19,10 +19,13 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity
 
         private byte[] send_prog=null;
         private byte[] send_data_tmp = new byte[35];
+        private String picked_prog=null;
 
 
         private Timer timer = new Timer();
@@ -137,6 +141,10 @@ public class MainActivity extends AppCompatActivity
                         Button get_programs = findViewById(R.id.getPrograms);
                         Button disconnect = findViewById(R.id.disconnect);
                         Button  add_fields = findViewById(R.id.add_fields);
+
+                        Spinner spinner = findViewById(R.id.program_pick);
+                        Button check_program = findViewById(R.id.check_program);
+                        Button start_prog = findViewById(R.id.start_prog);
 
 
                         //mTcpClient = null;
@@ -369,6 +377,45 @@ public class MainActivity extends AppCompatActivity
 //                        } catch (IllegalStateException e){
 //                                Toast.makeText(MainActivity.this, "Disconnected! Restart", Toast.LENGTH_LONG).show();
 //                        }
+
+
+                        check_program.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View view) {
+
+                                ArrayList<String> program_names = new ArrayList<>();
+                                program_names.add("pick");
+                                for (ProgramStruct ps : programs) {
+                                        program_names.add(ps.progName);
+                                }
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this , android.R.layout.simple_spinner_item, program_names);
+                                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                                //arrayAdapter.notifyDataSetChanged();
+                                spinner.setAdapter(arrayAdapter);
+                                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                picked_prog = parent.getItemAtPosition(position).toString();
+                                                Toast.makeText(parent.getContext(), "Selected: " + picked_prog, Toast.LENGTH_LONG).show();
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parent) {
+                                        }
+                                });
+
+                                }
+                        });
+                        start_prog.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View view) {
+                                        if(picked_prog!=null && !picked_prog.equals("pick"))
+                                        {
+                                                picked_prog="picked=" + picked_prog;
+                                                mTcpClient.sendMessage(picked_prog);
+                                                picked_prog=null;
+                                        }
+                                }
+                         });
 
                         add_fields.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View view) {

@@ -139,10 +139,17 @@
                             android:orientation="horizontal">
 
                             <Spinner
-                                android:id="@+id/spinner3"
+                                android:id="@+id/program_pick"
                                 android:layout_width="194dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="47dp"
                                 android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/check_program"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="get prog name" />
 
                             <Button
                                 android:id="@+id/start_prog"
